@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-10">
+    <div class="bg-manyuGreen text-white p-6 rounded-xl border-b-4 border-manyuGold mb-8">
+        <h1 class="text-3xl font-extrabold">The "Man-to-Man" Talk Zone</h1>
+        <p class="text-sm text-gray-200 mt-1">Brotherhood roundtable for mentorship, family leadership, health, wealth building, and community responsibility.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-xl shadow border-t-4 border-manyuGold h-fit">
+            <form method="POST" action="/talk-zone" class="space-y-3">
+                <input type="text" name="author_name" value="{{ session.get('user_name', '') }}" required placeholder="Your Name" class="w-full border rounded px-3 py-2 text-sm">
+                <select name="topic" class="w-full border rounded px-3 py-2 text-sm"><option value="Mentorship & Career">Mentorship & Career</option><option value="Brotherhood & Health">Brotherhood & Health</option><option value="Marriage & Family Leadership">Marriage & Family Leadership</option><option value="Investment & Wealth">Investment & Wealth</option></select>
+                <input type="text" name="title" required placeholder="Topic Headline" class="w-full border rounded px-3 py-2 text-sm">
+                <textarea name="content" rows="4" required placeholder="Your Message..." class="w-full border rounded px-3 py-2 text-sm"></textarea>
+                <button type="submit" class="w-full bg-manyuGreen text-white font-bold py-2.5 rounded-lg">Post Topic</button>
+            </form>
+        </div>
+        <div class="md:col-span-2 space-y-4">
+            {% for post in posts %}
+            <div class="bg-white p-6 rounded-xl shadow border-l-4 border-manyuGreen">
+                <span class="text-xs font-bold bg-yellow-100 text-manyuGreen px-2 py-0.5 rounded">{{ post.topic }}</span>
+                <h3 class="text-xl font-bold mt-2">{{ post.title }}</h3>
+                <p class="text-xs font-semibold text-manyuGreen">By {{ post.author_name }}</p>
+                <p class="text-sm text-gray-700 mt-3">{{ post.content }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

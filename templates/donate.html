@@ -1,0 +1,48 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <div class="bg-gradient-to-r from-manyuCocoa to-manyuGreen text-white p-8 rounded-2xl shadow-xl border-b-4 border-manyuGold text-center mb-10">
+        <span class="uppercase tracking-widest text-manyuGold text-xs font-bold">Support Manyu Development</span>
+        <h1 class="text-3xl md:text-4xl font-extrabold mt-2">Invest in Our Heritage &amp; Future</h1>
+        <p class="max-w-2xl mx-auto text-sm text-amber-100 mt-3">
+            Every contribution funds village oral history recordings, Manyu language preservation, cocoa community initiatives, and youth scholarships.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Mobile Money (Cameroon) -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-manyuGold">
+            <h3 class="text-xl font-bold text-manyuCocoa mb-2">Mobile Money (Cameroon)</h3>
+            <p class="text-xs text-gray-600 mb-4">Send directly via MTN MoMo or Orange Money to the official coordinator account:</p>
+            <div class="space-y-4 text-sm">
+                <div class="bg-yellow-50 border-2 border-yellow-400 p-4 rounded-lg">
+                    <div class="font-extrabold text-yellow-900">MTN Mobile Money (MoMo)</div>
+                    <div class="text-gray-900 mt-1 text-base">Number: <span class="font-mono font-extrabold select-all">+237 681 935 677</span></div>
+                    <div class="text-xs font-bold text-manyuCocoa mt-1">Account Name: Ayuk Besong</div>
+                </div>
+                <div class="bg-orange-50 border-2 border-orange-400 p-4 rounded-lg">
+                    <div class="font-extrabold text-orange-900">Orange Money (OM)</div>
+                    <div class="text-gray-900 mt-1 text-base">Number: <span class="font-mono font-extrabold select-all">+237 698 832 772</span></div>
+                    <div class="text-xs font-bold text-manyuCocoa mt-1">Account Name: Ayuk Besong</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diaspora & International PayPal -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-manyuGreen flex flex-col justify-between">
+            <div>
+                <h3 class="text-xl font-bold text-manyuGreen mb-2">Diaspora &amp; International (PayPal)</h3>
+                <p class="text-xs text-gray-600 mb-4">Contribute securely via PayPal from the USA, UK, Europe, or anywhere worldwide.</p>
+                <div class="bg-blue-50 border-2 border-blue-300 p-4 rounded-lg text-sm mb-4">
+                    <div class="font-extrabold text-blue-900">Official PayPal Email</div>
+                    <div class="font-mono font-extrabold text-base text-gray-900 mt-1 select-all">sirayuk@yahoo.com</div>
+                    <div class="text-xs font-bold text-manyuGreen mt-1">Recipient: Ayuk Besong</div>
+                </div>
+            </div>
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sirayuk%40yahoo.com&item_name=Manyu+Global+Network+Support&currency_code=USD" target="_blank" class="block w-full text-center bg-manyuGold text-manyuCocoa font-extrabold py-3.5 rounded-lg hover:bg-yellow-400 shadow-md">
+                Donate via PayPal (sirayuk@yahoo.com) &rarr;
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

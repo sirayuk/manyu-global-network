@@ -1,0 +1,33 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-10">
+    <div class="bg-manyuGreen text-white p-6 rounded-t-xl border-b-4 border-manyuGold">
+        <h1 class="text-2xl font-extrabold">Gemini — Primary Correspondent</h1>
+        <p class="text-xs text-gray-200 mt-1">Ask about Manyu villages, Kenyang & Ejagham phrases, or diaspora connections.</p>
+    </div>
+    <div id="chatBox" class="bg-white h-96 overflow-y-auto p-6 space-y-4 border-x">
+        <div class="bg-manyuEarth border-l-4 border-manyuGold p-4 rounded-lg text-sm">
+            <div class="font-bold text-manyuGreen mb-1">Gemini (Primary Correspondent)</div>
+            <p>Nkuba! Welcome to the Manyu Global Network. How can I assist you today?</p>
+        </div>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-b-xl border flex gap-2">
+        <input type="text" id="userMsg" placeholder="Ask Gemini anything..." class="flex-grow border rounded-lg px-4 py-2.5 text-sm" onkeypress="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()" class="bg-manyuGreen text-white font-bold px-6 py-2.5 rounded-lg text-sm">Send</button>
+    </div>
+</div>
+<script>
+async function sendMessage() {
+    const input = document.getElementById('userMsg');
+    const chatBox = document.getElementById('chatBox');
+    const msg = input.value.trim();
+    if (!msg) return;
+    chatBox.innerHTML += `<div class="text-right"><div class="inline-block bg-manyuGreen text-white px-4 py-2 rounded-lg text-sm">${msg}</div></div>`;
+    input.value = '';
+    const res = await fetch('/api/correspondent', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({message: msg}) });
+    const data = await res.json();
+    chatBox.innerHTML += `<div class="bg-manyuEarth border-l-4 border-manyuGold p-4 rounded-lg text-sm"><div class="font-bold text-manyuGreen mb-1">Gemini</div><p class="whitespace-pre-line">${data.reply}</p></div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+</script>
+{% endblock %}
