@@ -297,7 +297,7 @@ def api_correspondent():
     if not gemini_client:
         return jsonify({"reply": "Gemini Correspondent is ready! Add your GEMINI_API_KEY in Render's Environment Variables to activate live AI responses."})
     try:
-        response = gemini_client.models.generate_content(model="gemini-2.5-flash", contents=user_message, config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.6))
+        response = gemini_client.models.generate_content(model="gemini-3.8-flash", contents=user_message, config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.6))
         return jsonify({"reply": response.text})
     except Exception as e:
         return jsonify({"reply": f"Correspondent temporarily unavailable: {str(e)}"})
