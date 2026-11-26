@@ -1,0 +1,47 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+    <h1 class="text-3xl font-extrabold text-manyuGreen mb-6">Village-to-Village Database & Elders' Archive</h1>
+    <div class="space-y-6 mb-12">
+        {% for v in villages %}
+        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-manyuGreen">
+            <h2 class="text-2xl font-bold text-manyuGreen">{{ v.name }} <span class="text-xs bg-green-100 px-2 py-1 rounded">{{ v.subdivision }} - {{ v.clan }}</span></h2>
+            <p class="text-sm text-gray-700 mt-2">{{ v.overview }}</p>
+            <div class="mt-4 bg-manyuEarth p-4 rounded-lg">
+                <h4 class="text-xs font-extrabold uppercase text-manyuGreen mb-2">Elders' Background Stories</h4>
+                {% for s in v.stories %}
+                <div class="mb-2 pb-2 border-b last:border-0">
+                    <div class="font-bold text-sm">{{ s.title }} — {{ s.elder_name }}</div>
+                    <p class="text-xs text-gray-700 mt-1">{{ s.story_text }}</p>
+                </div>
+                {% else %}<p class="text-xs text-gray-500">No stories yet.</p>{% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded-xl shadow border-t-4 border-manyuGold">
+            <h3 class="text-xl font-bold text-manyuGreen mb-3">Elders' Storytelling Portal</h3>
+            <form method="POST" action="/villages" class="space-y-3">
+                <input type="hidden" name="form_type" value="add_story">
+                <select name="village_id" class="w-full border rounded px-3 py-2 text-sm">{% for v in villages %}<option value="{{ v.id }}">{{ v.name }}</option>{% endfor %}</select>
+                <input type="text" name="elder_name" required placeholder="Elder's Name & Title" class="w-full border rounded px-3 py-2 text-sm">
+                <input type="text" name="title" required placeholder="Story Title" class="w-full border rounded px-3 py-2 text-sm">
+                <textarea name="story_text" rows="4" required placeholder="Full Background Story..." class="w-full border rounded px-3 py-2 text-sm"></textarea>
+                <button type="submit" class="w-full bg-manyuGold text-manyuGreen font-bold py-2.5 rounded-lg">Publish Elder's Story</button>
+            </form>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow border-t-4 border-manyuGreen h-fit">
+            <h3 class="text-xl font-bold text-manyuGreen mb-3">Add a Village</h3>
+            <form method="POST" action="/villages" class="space-y-3">
+                <input type="hidden" name="form_type" value="add_village">
+                <input type="text" name="name" required placeholder="Village Name" class="w-full border rounded px-3 py-2 text-sm">
+                <select name="subdivision" class="w-full border rounded px-3 py-2 text-sm"><option value="Mamfe Central">Mamfe Central</option><option value="Eyumojock">Eyumojock</option><option value="Upper Bayang">Upper Bayang</option><option value="Akwaya">Akwaya</option></select>
+                <input type="text" name="clan" placeholder="Clan (e.g., Banyang, Ejagham)" class="w-full border rounded px-3 py-2 text-sm">
+                <textarea name="overview" rows="3" required placeholder="Village Overview..." class="w-full border rounded px-3 py-2 text-sm"></textarea>
+                <button type="submit" class="w-full bg-manyuGreen text-white font-bold py-2.5 rounded-lg">Add Village</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

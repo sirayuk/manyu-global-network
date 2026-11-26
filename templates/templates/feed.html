@@ -1,0 +1,159 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left / Center: Social Wall (2 Columns Wide) -->
+    <div class="lg:col-span-2 space-y-6">
+        <div class="bg-gradient-to-r from-manyuCocoa to-manyuGreen text-white p-6 rounded-2xl shadow-lg border-b-4 border-manyuGold flex flex-wrap justify-between items-center gap-3">
+            <div>
+                <h1 class="text-2xl font-extrabold">Manyu Social Wall</h1>
+                <p class="text-xs text-amber-100 mt-0.5">Say what you think, follow fellow Manyang, like, comment, and share across the world.</p>
+            </div>
+            <div class="flex gap-2 text-xs font-bold">
+                <a href="/feed?filter=all" class="px-3 py-1.5 rounded {{ 'bg-manyuGold text-manyuCocoa' if feed_filter != 'following' else 'bg-white/20 text-white' }}">All Posts</a>
+                <a href="/feed?filter=following" class="px-3 py-1.5 rounded {{ 'bg-manyuGold text-manyuCocoa' if feed_filter == 'following' else 'bg-white/20 text-white' }}">Following ({{ followed_names|length }})</a>
+            </div>
+        </div>
+
+        <!-- Create a Post Box (Facebook Style) -->
+        <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-manyuGold">
+            <h2 class="text-sm font-extrabold text-manyuCocoa uppercase mb-3">What is on your mind?</h2>
+            <form method="POST" action="/feed" class="space-y-3">
+                <input type="hidden" name="action" value="create_post">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="text" name="author_name" value="{{ session.get('user_name', '') }}" required placeholder="Your Full Name" class="border rounded-lg px-3 py-2 text-sm">
+                    <input type="text" name="author_village" placeholder="Your Village / City (e.g., Ossing • USA)" class="border rounded-lg px-3 py-2 text-sm">
+                </div>
+                <textarea name="content" rows="3" required placeholder="Share your thoughts, village news, cultural reflections, or diaspora updates..." class="w-full border rounded-lg px-3 py-2 text-sm"></textarea>
+                <div class="flex flex-wrap gap-3 items-center">
+                    <input type="url" name="image_url" placeholder="Optional Photo URL (https://...)" class="flex-grow border rounded-lg px-3 py-2 text-xs">
+                    <button type="submit" class="bg-manyuGreen hover:bg-manyuCocoa text-white font-bold px-6 py-2.5 rounded-lg text-sm shadow">Post to Wall</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Posts Feed -->
+        {% for p in posts %}
+        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-manyuGreen">
+            <div class="flex justify-between items-start gap-2">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-9 h-9 rounded-full bg-manyuCocoa text-manyuGold font-extrabold flex items-center justify-center text-xs">{{ p.author_name[:2].upper() }}</span>
+                        <div>
+                            <h3 class="font-extrabold text-gray-900 text-base">{{ p.author_name }}</h3>
+                            <p class="text-[11px] text-manyuGreen font-semibold">{{ p.author_village }} &bull; {{ p.created_at.strftime('%b %d, %Y %H:%M') }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% if session.get('user_name', '') != p.author_name %}
+                <form method="POST" action="/feed">
+                    <input type="hidden" name="action" value="follow_member">
+                    <input type="hidden" name="follower_name" value="{{ session.get('user_name', 'Guest Member') }}">
+                    <input type="hidden" name="followed_name" value="{{ p.author_name }}">
+                    <button type="submit" class="text-xs font-bold px-3 py-1 rounded-full border {{ 'bg-manyuGold text-manyuCocoa border-manyuGold' if p.author_name in followed_names else 'border-manyuGreen text-manyuGreen hover:bg-manyuGreen hover:text-white' }}">
+                        {{ 'Following' if p.author_name in followed_names else '+ Follow' }}
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+
+            <p class="text-sm text-gray-800 mt-4 leading-relaxed whitespace-pre-line">{{ p.content }}</p>
+            {% if p.image_url %}
+            <img src="{{ p.image_url }}" alt="Post attachment" class="mt-3 rounded-xl max-h-80 w-full object-cover border">
+            {% endif %}
+
+            <!-- Like, Comment Count & Share Bar -->
+            <div class="mt-4 pt-3 border-t flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-gray-600">
+                <div class="flex items-center gap-3">
+                    <form method="POST" action="/feed">
+                        <input type="hidden" name="action" value="like_post">
+                        <input type="hidden" name="post_id" value="{{ p.id }}">
+                        <button type="submit" class="bg-amber-50 hover:bg-amber-100 text-manyuCocoa border border-amber-300 px-3 py-1.5 rounded-lg">
+                            Like ({{ p.likes_count }})
+                        </button>
+                    </form>
+                    <form method="POST" action="/feed">
+                        <input type="hidden" name="action" value="share_post">
+                        <input type="hidden" name="post_id" value="{{ p.id }}">
+                        <button type="submit" class="bg-emerald-50 hover:bg-emerald-100 text-manyuGreen border border-emerald-300 px-3 py-1.5 rounded-lg">
+                            Share ({{ p.shares_count }})
+                        </button>
+                    </form>
+                </div>
+                <span>{{ p.comments|length }} Comment(s)</span>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="mt-4 bg-manyuEarth p-3.5 rounded-lg space-y-2.5">
+                {% for c in p.comments %}
+                <div class="text-xs bg-white p-2.5 rounded border">
+                    <span class="font-extrabold text-manyuCocoa">{{ c.commenter_name }}:</span>
+                    <span class="text-gray-800">{{ c.comment_text }}</span>
+                </div>
+                {% endfor %}
+                <form method="POST" action="/feed" class="flex flex-wrap sm:flex-nowrap gap-2 pt-1">
+                    <input type="hidden" name="action" value="comment_post">
+                    <input type="hidden" name="post_id" value="{{ p.id }}">
+                    <input type="text" name="commenter_name" value="{{ session.get('user_name', '') }}" required placeholder="Your Name" class="border rounded px-2.5 py-1.5 text-xs bg-white w-full sm:w-36">
+                    <input type="text" name="comment_text" required placeholder="Write a comment..." class="border rounded px-2.5 py-1.5 text-xs bg-white flex-grow">
+                    <button type="submit" class="bg-manyuCocoa text-white text-xs font-bold px-3 py-1.5 rounded">Reply</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Right Column: Live Community Chat Box -->
+    <div class="bg-white rounded-2xl shadow-lg border-t-4 border-manyuCocoa flex flex-col h-[680px] sticky top-20">
+        <div class="bg-manyuCocoa text-white p-4 rounded-t-xl border-b-2 border-manyuGold">
+            <h2 class="text-lg font-extrabold">Manyu Live Community Chat</h2>
+            <p class="text-[11px] text-amber-100">Chat live in English or French with members worldwide</p>
+        </div>
+
+        <div id="chat-feed" class="flex-grow p-4 overflow-y-auto space-y-3 bg-manyuEarth">
+            {% for m in chat_messages %}
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-amber-100">
+                <div class="flex justify-between text-[11px] font-bold">
+                    <span class="text-manyuCocoa">{{ m.sender_name }} {% if m.sender_location %}<span class="text-manyuGreen">({{ m.sender_location }})</span>{% endif %}</span>
+                    <span class="text-gray-400">{{ m.created_at.strftime('%H:%M') }}</span>
+                </div>
+                <p class="text-xs text-gray-800 mt-1">{{ m.message_text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="/feed" class="p-4 border-t bg-white space-y-2 rounded-b-2xl">
+            <input type="hidden" name="action" value="send_chat">
+            <div class="grid grid-cols-2 gap-2">
+                <input type="text" name="sender_name" value="{{ session.get('user_name', '') }}" required placeholder="Your Name" class="border rounded px-2.5 py-1.5 text-xs">
+                <input type="text" name="sender_location" placeholder="Village / Country" class="border rounded px-2.5 py-1.5 text-xs">
+            </div>
+            <div class="flex gap-2">
+                <input type="text" name="message_text" required placeholder="Type a chat message..." class="border rounded px-3 py-2 text-xs flex-grow">
+                <button type="submit" class="bg-manyuGreen hover:bg-manyuCocoa text-white font-bold px-4 py-2 rounded text-xs">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+const chatBox = document.getElementById('chat-feed');
+if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+
+setInterval(async () => {
+    try {
+        const res = await fetch('/api/chat-messages');
+        const msgs = await res.json();
+        if (!chatBox || !Array.isArray(msgs)) return;
+        chatBox.innerHTML = msgs.map(m => `
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-amber-100">
+                <div class="flex justify-between text-[11px] font-bold">
+                    <span class="text-manyuCocoa">${m.sender_name} ${m.sender_location ? `<span class="text-manyuGreen">(${m.sender_location})</span>` : ''}</span>
+                    <span class="text-gray-400">${m.time}</span>
+                </div>
+                <p class="text-xs text-gray-800 mt-1">${m.message_text}</p>
+            </div>
+        `).join('');
+    } catch (e) {}
+}, 8000);
+</script>
+{% endblock %}

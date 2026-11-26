@@ -1,0 +1,72 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<section class="relative bg-manyuCocoa text-white py-16 px-4 border-b-4 border-manyuGold overflow-hidden">
+    <img src="https://english.news.cn/20221217/48832cad092f4dfc99d7c8c1eb126cb6/67e34b31026b45b6bed1db44521293e9.jpg" alt="Manyu Cocoa Plantation Harvest" class="absolute inset-0 w-full h-full object-cover opacity-25">
+    <div class="relative max-w-6xl mx-auto text-center">
+        <span class="uppercase tracking-widest text-manyuGold text-xs font-bold bg-manyuDark/70 px-3 py-1 rounded-full">Mamfe &bull; Eyumojock &bull; Akwaya &bull; Upper Bayang &bull; Global Diaspora</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold mt-4 mb-5 drop-shadow">Rooted in Our Cocoa Lands, United Across the World</h1>
+        <p class="max-w-2xl mx-auto text-amber-100 text-lg mb-8">Honoring Manyu legends past and present, preserving elders' oral histories, showcasing our skills, and building generational wealth from our cocoa plantations to the diaspora.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="/signup" class="bg-manyuGold text-manyuCocoa font-extrabold px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-400">Create Your Manyang Profile</a>
+            <a href="/legends" class="bg-manyuGreen border-2 border-manyuGold text-white font-bold px-6 py-3 rounded-lg hover:bg-emerald-900">Hall of Manyu Legends</a>
+        </div>
+    </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 -mt-8 relative z-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-xl shadow-md p-6 text-center border-b-2 border-manyuCocoa">
+        <div><div class="text-3xl font-extrabold text-manyuCocoa">{{ stats.members }}</div><div class="text-xs uppercase text-gray-500 mt-1">Registered Manyang</div></div>
+        <div><div class="text-3xl font-extrabold text-manyuGreen">{{ stats.villages }}</div><div class="text-xs uppercase text-gray-500 mt-1">Documented Villages</div></div>
+        <div><div class="text-3xl font-extrabold text-manyuCocoa">{{ stats.legends }}</div><div class="text-xs uppercase text-gray-500 mt-1">Manyu Legends</div></div>
+        <div><div class="text-3xl font-extrabold text-manyuGreen">{{ stats.words }}</div><div class="text-xs uppercase text-gray-500 mt-1">Lexicon Entries</div></div>
+    </div>
+</section>
+
+<!-- Hall of Manyu Legends Preview -->
+<section class="max-w-6xl mx-auto px-4 mt-14">
+    <div class="flex justify-between items-end mb-6">
+        <div>
+            <h2 class="text-2xl font-extrabold text-manyuCocoa">Hall of Manyu Legends (Late &amp; Living)</h2>
+            <p class="text-sm text-gray-600">Celebrating icons who shaped Manyu Division, Cameroon, and the world.</p>
+        </div>
+        <a href="/legends" class="text-sm font-bold text-manyuCocoa underline">View All Legends &amp; Add Tribute &rarr;</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {% for leg in legends %}
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border-t-4 {{ 'border-manyuGold' if 'Living' in leg.status else 'border-manyuCocoa' }}">
+            {% if leg.photo_url %}
+            <img src="{{ leg.photo_url }}" alt="{{ leg.full_name }}" class="w-full h-44 object-cover">
+            {% else %}
+            <div class="w-full h-32 bg-gradient-to-br from-manyuCocoa to-manyuGreen flex items-center justify-center text-manyuGold font-extrabold text-3xl">
+                {{ leg.full_name[:2].upper() }}
+            </div>
+            {% endif %}
+            <div class="p-4">
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded {{ 'bg-green-100 text-manyuGreen' if 'Living' in leg.status else 'bg-amber-100 text-manyuCocoa' }}">{{ leg.status }}</span>
+                <h3 class="text-lg font-extrabold text-gray-900 mt-2">{{ leg.full_name }}</h3>
+                <p class="text-xs font-semibold text-manyuGreen mt-0.5">{{ leg.title_role }}</p>
+                <p class="text-xs text-gray-600 mt-2 line-clamp-3">{{ leg.tribute }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Cultural & Cocoa Heritage Banner -->
+<section class="max-w-6xl mx-auto px-4 mt-14">
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-amber-200">
+        <img src="https://english.news.cn/20221217/48832cad092f4dfc99d7c8c1eb126cb6/67e34b31026b45b6bed1db44521293e9.jpg" alt="Manyu Cocoa Pods" class="w-full h-64 md:h-full object-cover">
+        <div class="p-8 flex flex-col justify-center">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-manyuCocoa">Manyu Economic &amp; Cultural Backbone</span>
+            <h3 class="text-2xl font-extrabold text-manyuGreen mt-2">From Our Cocoa Plantations to Global Enterprise</h3>
+            <p class="text-sm text-gray-700 mt-3 leading-relaxed">
+                From Mamfe to Eyumojock, Upper Bayang, and Akwaya, our fertile cocoa farms and rich forest traditions have educated generations of doctors, professors, engineers, and statesmen. Explore our village records, trade agro-produce, and preserve our heritage.
+            </p>
+            <div class="mt-5 flex gap-3">
+                <a href="/villages" class="bg-manyuCocoa text-white text-xs font-bold px-4 py-2.5 rounded-lg">Explore Villages</a>
+                <a href="/marketplace" class="bg-manyuGold text-manyuCocoa text-xs font-bold px-4 py-2.5 rounded-lg">Visit Marketplace</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

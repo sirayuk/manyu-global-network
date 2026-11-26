@@ -1,0 +1,58 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="bg-gradient-to-r from-manyuCocoa to-manyuGreen text-white p-8 rounded-2xl shadow-lg border-b-4 border-manyuGold mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold">Hall of Manyu Legends (Late &amp; Living)</h1>
+            <p class="text-sm text-amber-100 mt-1">Honoring trailblazers from Mamfe, Eyumojock, Upper Bayang, Akwaya, and across the globe—including Prof. Peter Agbor-Tabi, Dr. Tabe Tando, and many more.</p>
+        </div>
+        <div class="flex gap-2 text-xs font-bold">
+            <a href="/legends" class="px-3 py-1.5 rounded {{ 'bg-manyuGold text-manyuCocoa' if not selected_status else 'bg-white/20 text-white' }}">All Legends</a>
+            <a href="/legends?status=Living Legend" class="px-3 py-1.5 rounded {{ 'bg-manyuGold text-manyuCocoa' if selected_status=='Living Legend' else 'bg-white/20 text-white' }}">Living Legends</a>
+            <a href="/legends?status=In Loving Memory (Late)" class="px-3 py-1.5 rounded {{ 'bg-manyuGold text-manyuCocoa' if selected_status=='In Loving Memory (Late)' else 'bg-white/20 text-white' }}">In Loving Memory</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
+        {% for leg in legends %}
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border-t-4 {{ 'border-manyuGreen' if 'Living' in leg.status else 'border-manyuCocoa' }}">
+            {% if leg.photo_url %}
+            <img src="{{ leg.photo_url }}" alt="{{ leg.full_name }}" class="w-full h-56 object-cover">
+            {% else %}
+            <div class="w-full h-40 bg-gradient-to-br from-manyuCocoa via-amber-900 to-manyuGreen flex flex-col items-center justify-center text-manyuGold">
+                <span class="text-4xl font-extrabold">{{ leg.full_name[:2].upper() }}</span>
+                <span class="text-[11px] text-amber-100 mt-1">Portrait Photo Can Be Added</span>
+            </div>
+            {% endif %}
+            <div class="p-6">
+                <div class="flex justify-between items-center text-xs mb-2">
+                    <span class="font-bold px-2.5 py-0.5 rounded {{ 'bg-green-100 text-manyuGreen' if 'Living' in leg.status else 'bg-amber-100 text-manyuCocoa' }}">{{ leg.status }}</span>
+                    <span class="text-gray-500">{{ leg.subdivision_village }}</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-gray-900">{{ leg.full_name }}</h2>
+                <p class="text-xs font-bold text-manyuCocoa mt-1">{{ leg.title_role }}</p>
+                <p class="text-sm text-gray-700 mt-3 leading-relaxed">{{ leg.tribute }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Add a Manyu Legend Form -->
+    <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-manyuGold max-w-3xl mx-auto">
+        <h3 class="text-xl font-extrabold text-manyuCocoa mb-1">Nominate &amp; Add a Manyu Legend</h3>
+        <p class="text-xs text-gray-600 mb-4">Add any distinguished son or daughter of Manyu from anywhere in the world (both living and late), along with their portrait link.</p>
+        <form method="POST" action="/legends" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" name="full_name" required placeholder="Full Name & Titles (e.g., Prof. / Dr. / Chief...)" class="border rounded px-3 py-2 text-sm">
+            <select name="status" class="border rounded px-3 py-2 text-sm bg-white">
+                <option value="Living Legend">Living Legend</option>
+                <option value="In Loving Memory (Late)">In Loving Memory (Late)</option>
+            </select>
+            <input type="text" name="subdivision_village" required placeholder="Subdivision / Village (e.g., Mamfe, Eyumojock)" class="border rounded px-3 py-2 text-sm">
+            <input type="text" name="title_role" required placeholder="Notable Role / Achievement" class="border rounded px-3 py-2 text-sm">
+            <input type="url" name="photo_url" placeholder="Portrait Photo Link (https://... optional)" class="md:col-span-2 border rounded px-3 py-2 text-sm">
+            <textarea name="tribute" rows="3" required placeholder="Biography, achievements, and contribution to Manyu & the world..." class="md:col-span-2 border rounded px-3 py-2 text-sm"></textarea>
+            <button type="submit" class="md:col-span-2 bg-manyuCocoa text-white font-bold py-3 rounded-lg hover:bg-manyuGreen">Add to Hall of Manyu Legends</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

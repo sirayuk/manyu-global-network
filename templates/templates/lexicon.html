@@ -1,0 +1,27 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+    <h1 class="text-3xl font-extrabold text-manyuGreen mb-6">Manyu Languages Lexicon</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+        {% for w in entries %}
+        <div class="bg-white p-5 rounded-xl shadow border-t-4 border-manyuGold">
+            <span class="bg-green-100 text-manyuGreen text-xs font-bold px-2 py-0.5 rounded">{{ w.language }} - {{ w.category }}</span>
+            <h3 class="text-xl font-extrabold text-manyuGreen mt-2">{{ w.word_or_phrase }}</h3>
+            <p class="text-sm font-bold text-gray-900 mt-1">Meaning: {{ w.english_meaning }}</p>
+            <p class="text-xs text-gray-600 mt-2 bg-manyuEarth p-2 rounded">{{ w.usage_note }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow border-t-4 border-manyuGreen max-w-3xl mx-auto">
+        <h3 class="text-xl font-bold text-manyuGreen mb-3">Contribute a Word or Proverb</h3>
+        <form method="POST" action="/lexicon" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <select name="language" class="border rounded px-3 py-2 text-sm"><option value="Kenyang (Banyang)">Kenyang (Banyang)</option><option value="Ejagham">Ejagham</option><option value="Denya (Anyang)">Denya (Anyang)</option><option value="Boki">Boki</option></select>
+            <select name="category" class="border rounded px-3 py-2 text-sm"><option value="Greeting">Greeting</option><option value="Culture & Royalty">Culture & Royalty</option><option value="Daily Life">Daily Life</option><option value="Proverb">Proverb</option></select>
+            <input type="text" name="word_or_phrase" required placeholder="Local Word or Phrase" class="border rounded px-3 py-2 text-sm">
+            <input type="text" name="english_meaning" required placeholder="English / French Meaning" class="border rounded px-3 py-2 text-sm">
+            <input type="text" name="usage_note" placeholder="Context / Usage Note" class="md:col-span-2 border rounded px-3 py-2 text-sm">
+            <button type="submit" class="md:col-span-2 bg-manyuGreen text-white font-bold py-2.5 rounded-lg">Add to Lexicon</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

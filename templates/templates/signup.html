@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="md:col-span-2 bg-white p-8 rounded-xl shadow-lg border-t-4 border-manyuGreen">
+        <h2 class="text-2xl font-bold text-manyuGreen mb-4">Join the Manyu Global Network</h2>
+        <form method="POST" action="/signup" class="space-y-4">
+            <input type="text" name="full_name" required placeholder="Full Name (e.g., Besong Ayuk)" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <input type="email" name="email" required placeholder="Email Address" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <input type="password" name="password" required placeholder="Password" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <input type="text" name="current_location" required placeholder="Current City & Country" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <select name="subdivision" class="w-full border rounded-lg px-3 py-2 text-sm bg-white">
+                <option value="Mamfe Central">Mamfe Central</option><option value="Eyumojock">Eyumojock</option><option value="Upper Bayang">Upper Bayang</option><option value="Akwaya">Akwaya</option>
+            </select>
+            <input type="text" name="village" required placeholder="Home Village (e.g., Ossing, Besongabang)" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <input type="text" name="profession_skills" required placeholder="What You Do / Skills & Services" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <textarea name="bio" rows="3" placeholder="Short Bio..." class="w-full border rounded-lg px-3 py-2 text-sm"></textarea>
+            <label class="flex items-center space-x-2 text-xs font-semibold"><input type="checkbox" name="is_elder"><span>I am a Village Elder / Cultural Custodian</span></label>
+            <button type="submit" class="w-full bg-manyuGreen text-white font-bold py-3 rounded-lg">Complete Registration</button>
+        </form>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-manyuGold h-fit">
+        <h3 class="text-lg font-bold text-manyuGreen mb-3">Member Login</h3>
+        <form method="POST" action="/login" class="space-y-3">
+            <input type="email" name="email" required placeholder="Email" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <input type="password" name="password" required placeholder="Password" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <button type="submit" class="w-full bg-manyuGold text-manyuGreen font-bold py-2.5 rounded-lg">Sign In</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

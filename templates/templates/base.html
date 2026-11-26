@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manyu Global Network | Unity, Cocoa Heritage & Progress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        manyuGreen: '#0F3D2E',
+                        manyuCocoa: '#3E1F0D',
+                        manyuGold: '#D4AF37',
+                        manyuEarth: '#FAF6F0',
+                        manyuDark: '#1E1108'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-manyuEarth text-gray-800 flex flex-col min-h-screen font-sans">
+    <nav class="bg-gradient-to-r from-manyuCocoa via-manyuGreen to-manyuCocoa text-white shadow-lg sticky top-0 z-50 border-b-2 border-manyuGold">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <span class="bg-manyuGold text-manyuCocoa font-extrabold px-2.5 py-1 rounded text-lg shadow">MGN</span>
+                <span class="font-bold text-base lg:text-lg tracking-wide">MANYU GLOBAL</span>
+            </a>
+            <div class="hidden xl:flex space-x-3 text-xs font-semibold">
+                <a href="/" class="hover:text-manyuGold">Home</a>
+                <a href="/feed" class="text-manyuGold font-bold hover:underline">Social Wall &amp; Chat</a>
+                <a href="/directory" class="hover:text-manyuGold">Directory</a>
+                <a href="/legends" class="hover:text-manyuGold">Legends</a>
+                <a href="/villages" class="hover:text-manyuGold">Villages</a>
+                <a href="/events" class="hover:text-manyuGold">Events</a>
+                <a href="/lexicon" class="hover:text-manyuGold">Lexicon</a>
+                <a href="/family-tree" class="hover:text-manyuGold">Family Tree</a>
+                <a href="/marketplace" class="hover:text-manyuGold">Market</a>
+                <a href="/correspondent" class="hover:text-manyuGold">Gemini AI</a>
+                <a href="/support" class="hover:text-manyuGold">Tickets</a>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="/donate" class="bg-amber-700 hover:bg-amber-600 border border-manyuGold text-white px-3 py-1.5 rounded text-xs font-bold shadow">Donate</a>
+                {% if session.get('user_name') %}
+                    <a href="/logout" class="bg-red-800 hover:bg-red-900 px-3 py-1.5 rounded text-xs font-semibold">Logout</a>
+                {% else %}
+                    <a href="/signup" class="bg-manyuGold text-manyuCocoa hover:bg-yellow-400 px-3 py-1.5 rounded text-xs font-bold shadow">Join</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="xl:hidden bg-manyuDark px-4 py-2 flex flex-wrap justify-center gap-3 text-xs">
+            <a href="/">Home</a><a href="/feed" class="text-manyuGold font-bold">Social Wall &amp; Chat</a><a href="/directory">Directory</a><a href="/legends">Legends</a><a href="/villages">Villages</a><a href="/events">Events</a><a href="/family-tree">Family Tree</a><a href="/correspondent">Gemini AI</a>
+        </div>
+    </nav>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="max-w-4xl mx-auto mt-4 px-4">
+          {% for message in messages %}
+            <div class="bg-amber-100 border-l-4 border-manyuCocoa text-manyuCocoa p-3 rounded shadow text-sm font-medium">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <main class="flex-grow">{% block content %}{% endblock %}</main>
+    <a href="/correspondent" class="fixed bottom-5 right-5 bg-manyuCocoa text-white border-2 border-manyuGold px-4 py-3 rounded-full shadow-2xl flex items-center space-x-2 hover:bg-manyuGreen z-50">
+        <span class="text-manyuGold font-extrabold">*</span><span class="text-xs font-bold">Ask Gemini Correspondent</span>
+    </a>
+    <footer class="bg-manyuDark text-gray-300 mt-16 border-t-4 border-manyuGold text-center text-xs py-6">
+        &copy; 2026 Manyu Global Network &bull; Rooted in Cocoa, Culture &amp; Brotherhood &bull; Primary Correspondent: Gemini AI
+    </footer>
+</body>
+</html>

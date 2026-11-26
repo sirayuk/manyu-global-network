@@ -1,0 +1,36 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="bg-white p-6 rounded-xl shadow border-t-4 border-manyuGold h-fit">
+        <h3 class="text-lg font-bold text-manyuCocoa mb-3">Open a Help Ticket</h3>
+        <form method="POST" action="/support" class="space-y-3">
+            <input type="hidden" name="action" value="create">
+            <input type="text" name="sender_name" required placeholder="Your Name" class="w-full border rounded px-3 py-2 text-sm">
+            <input type="text" name="sender_contact" required placeholder="Email or WhatsApp" class="w-full border rounded px-3 py-2 text-sm">
+            <select name="category" class="w-full border rounded px-3 py-2 text-sm"><option value="Village Record">Village Record</option><option value="Manyu Legend">Manyu Legend Submission</option><option value="Account Help">Account Help</option><option value="General Inquiry">General Inquiry</option></select>
+            <input type="text" name="subject" required placeholder="Subject" class="w-full border rounded px-3 py-2 text-sm">
+            <textarea name="message" rows="4" required placeholder="Your Message..." class="w-full border rounded px-3 py-2 text-sm"></textarea>
+            <button type="submit" class="w-full bg-manyuCocoa text-white font-bold py-2.5 rounded-lg hover:bg-manyuGreen">Save Help Ticket</button>
+        </form>
+    </div>
+    <div class="md:col-span-2 space-y-4">
+        <h2 class="text-xl font-bold text-manyuCocoa">Saved Help Tickets ({{ tickets|length }})</h2>
+        {% for t in tickets %}
+        <div class="bg-white p-5 rounded-xl shadow border-l-4 {{ 'border-emerald-600' if t.status=='Resolved' else 'border-manyuGold' }}">
+            <div class="flex justify-between text-xs mb-1"><span class="font-bold">#{{ t.id }} - {{ t.category }} ({{ t.status }})</span><span>{{ t.created_at.strftime('%b %d, %Y') }}</span></div>
+            <h3 class="text-lg font-bold">{{ t.subject }}</h3>
+            <p class="text-xs text-manyuGreen font-semibold">From: {{ t.sender_name }} ({{ t.sender_contact }})</p>
+            <p class="text-sm text-gray-700 mt-2 bg-manyuEarth p-3 rounded">{{ t.message }}</p>
+            {% if t.status != 'Resolved' %}
+            <form method="POST" action="/support" class="mt-3 flex justify-end items-center gap-2">
+                <input type="hidden" name="action" value="resolve">
+                <input type="hidden" name="ticket_id" value="{{ t.id }}">
+                <input type="password" name="admin_passcode" required placeholder="Admin Passcode" class="border rounded px-2 py-1 text-xs w-36">
+                <button type="submit" class="text-xs bg-manyuGreen text-white px-3 py-1.5 rounded font-bold">Mark Resolved</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
